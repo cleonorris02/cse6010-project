@@ -1,0 +1,10 @@
+# Core Dependencies for Bioinformatics and Data Handling
+biopython
+numpy
+pandas
+matplotlib
+seaborn
+
+# Specialized Dependencies (Optional, based on your planned analysis)
+scikit-learn
+dna-features-viewer

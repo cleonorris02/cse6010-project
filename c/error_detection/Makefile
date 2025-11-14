@@ -1,8 +1,8 @@
 # Outline generated with ChatGPT (OpenAI), Oct 2025.       
 # Reviewed and modified by Cleo Norris.
 
-# use GNU Compiler Collection
-CC=gcc
+# use Clang compiler
+CC=clang
 
 # standard C11, enable all warnings, optimize for speed
 CFLAGS=-std=c11 -Wall -Wextra -pedantic -O2

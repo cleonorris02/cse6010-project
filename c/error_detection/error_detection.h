@@ -81,6 +81,7 @@ void print_parity_block(char **block, size_t total_rows, size_t total_cols);
 
 #ifdef __cplusplus
 }
+
 #endif
 
 #endif /* ERROR_DETECTION_H */

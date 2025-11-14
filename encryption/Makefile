@@ -1,30 +1,31 @@
-CC ?= gcc
-CFLAGS ?= -O2 -Wall -Wextra -std=c11
-LDFLAGS ?=
-LIBSODIUM_CFLAGS ?=
-LIBSODIUM_LDFLAGS ?= -lsodium
-OPENMP_FLAG ?= -fopenmp
+# Compiler (Apple Clang by default)
+CC ?= clang
 
-SRC_DIR := src
-BIN_DIR := bin
-INC_DIR := include
+# Homebrew prefixes
+BREW_PREFIX       := $(shell brew --prefix)
+LIBOMP_PREFIX     := $(shell brew --prefix libomp)
+SODIUM_PREFIX     := $(shell brew --prefix libsodium)
 
-SOURCES := $(wildcard $(SRC_DIR)/*.c)
-OBJECTS := $(patsubst $(SRC_DIR)/%.c,$(BIN_DIR)/%.o,$(SOURCES))
-TARGET := $(BIN_DIR)/hotspot_encrypt
+# Compiler and linker flags
+CFLAGS  ?= -O2 -Wall -Wextra -std=c11 -Xpreprocessor -fopenmp
+INCLUDES = -Iinclude -I$(LIBOMP_PREFIX)/include -I$(SODIUM_PREFIX)/include
+LDFLAGS ?= -L$(LIBOMP_PREFIX)/lib -L$(SODIUM_PREFIX)/lib
+LIBS    ?= -lsodium -lomp
+
+# Sources and targets
+SOURCES = src/main.c src/sequence.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET  = dna_hotspot_encryptor
 
 .PHONY: all clean
 
 all: $(TARGET)
 
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
-$(BIN_DIR)/%.o: $(SRC_DIR)/%.c | $(BIN_DIR)
-	$(CC) $(CFLAGS) $(LIBSODIUM_CFLAGS) -I$(INC_DIR) -c $< -o $@
-
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OPENMP_FLAG) $^ -o $@ $(LIBSODIUM_LDFLAGS) $(LDFLAGS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@ $(LDFLAGS) $(LIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -rf $(BIN_DIR)
+	rm -f $(OBJECTS) $(TARGET)

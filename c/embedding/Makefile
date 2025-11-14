@@ -1,30 +1,28 @@
-/*         
- * Outline and logic generated with ChatGPT (OpenAI), Nov 2025.         
- * Reviewed and modified by Cleo Norris.         
-*/
+# Outline and logic generated with ChatGPT (OpenAI), Nov 2025.         
+# Reviewed and modified by Cleo Norris.         
 
 CC=clang
 CFLAGS ?= -std=c11 -Wall -Wextra -Werror -pedantic
-INCLUDES := -Ipython
+INCLUDES := -Ic
 
-LIB := python/libembedding.a
-DEMO := python/embedding_demo
+LIB := libembedding.a
+DEMO := embedding_demo
 
 all: $(DEMO)
 
-$(DEMO): $(LIB) python/demo_embedding.o
-	$(CC) $(CFLAGS) python/demo_embedding.o -Lpython -lembedding -o $@
+$(DEMO): $(LIB) demo_embedding.o
+	$(CC) $(CFLAGS) demo_embedding.o libembedding.a -o $@
 
-$(LIB): python/embedding.o
+$(LIB): embedding.o
 	ar rcs $@ $^
 
-python/embedding.o: python/embedding.c python/embedding.h
+c/embedding.o: embedding.c embedding.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-python/demo_embedding.o: python/demo_embedding.c python/embedding.h
+c/demo_embedding.o: demo_embedding.c embedding.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f python/*.o $(LIB) $(DEMO)
+	rm -f c/*.o $(LIB) $(DEMO)
 
 .PHONY: all clean

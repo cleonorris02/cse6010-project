@@ -60,3 +60,4 @@ void free_embedding_result(EmbeddingResult *result);
 #endif
 
 #endif /* EMBEDDING_H */
+

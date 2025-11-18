@@ -1,0 +1,11 @@
+Event,Description,Row0,Row1,Row2,Row3
+Initial Block,Original parity block,AACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACAATAATGC
+
+Mutation 1,Introducing mutation at (0,0): A -> T,TACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACAATAATGC
+Mutation 1 Correction,Block after correction,AACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACAATAATGC
+
+Mutation 2,Introducing mutation at (1,9): G -> A,AACGGATGAG,TTAGGCATAA,CGTATTCGGC,ACAATAATGC
+Mutation 2 Correction,Block after correction,AACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACAATAATGC
+
+Mutation 3,Introducing mutation at (3,2): A -> G,AACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACGATAATGC
+Mutation 3 Correction,Block after correction,AACGGATGAG,TTAGGCATAG,CGTATTCGGC,ACAATAATGC

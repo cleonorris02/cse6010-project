@@ -1,6 +1,6 @@
 /*         
  * Outline and logic generated with ChatGPT (OpenAI), Oct 2025.         
- * Reviewed and modified by Yue Tsz Fan.         
+ * Reviewed and modified by Cleo Norris.         
 */
 
 /*
@@ -14,33 +14,37 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-    size_t position;          /* Index in a sequence. */
-    char reference;           /* Expected reference nucleotide (A/C/G/T). */
-    const char *alternates;   /* Pointer to an array of alternate base characters. */
-    size_t num_alternates;    /* Number of entries in alternates. */
-} CandidateSNP;
+#include "embedding.h"
 
-typedef struct {
-    size_t position;
-    char reference;
-    char allele;              /* Allele is a variant form of the reference nucleotide. */
-    int bit;
-} EmbeddedAllele;
+/*
+ * SNP embedding utilities for hiding encrypted payloads within genomic
+ * sequences. This module mirrors the behavior of the previous Python
+ * implementation while providing a C interface suitable for integration with
+ * lower-level systems.
+ */
 
-typedef struct {
-    char *sequence;               /* Mutated sequence with embedded payload. */
-    EmbeddedAllele *alleles;      /* Array of embedded allele describing each encoded bit. */
-    size_t num_alleles;           /* Number of encoded bits. */
-} EmbeddingResult;
+/* -- Internal helpers ----------------------------------------------------- */
 
-/* Use this map when alternates are not provided. */
+static int set_error(char **out_error, const char *message);
+static int base_index(char base);
+static int select_allele(char reference,
+                         int bit,
+                         const CandidateSNP *candidate,
+                         char *out_allele,
+                         char **out_error);
+
+/* Deterministic mapping used when alternates are not provided. */
 static const char DEFAULT_ALLELE_MAP[4][2] = {
     /* A */ {'C', 'G'},
     /* C */ {'A', 'T'},
     /* G */ {'A', 'T'},
     /* T */ {'C', 'G'}
 };
+
+size_t calculate_capacity(const CandidateSNP *candidates, size_t num_candidates) {
+    (void)candidates; /* Unused parameter retained for parity with Python API. */
+    return num_candidates;
+}
 
 int embed_bitstream(const char *sequence,
                     const CandidateSNP *candidates,
@@ -91,13 +95,6 @@ int embed_bitstream(const char *sequence,
         alleles = NULL;
     }
 
-    /* For each bit i:
-        Validates candidate position inside sequence and that sequence[pos] equals candidate.reference (case-insensitive).
-        Calls select_allele to pick an alternate base for bit value (0/1).
-        Writes chosen allele into mutated sequence at pos.
-        Records EmbeddedAllele entry.
-    */
-
     for (i = 0; i < bit_count; ++i) {
         const CandidateSNP *candidate = &candidates[i];
         size_t pos = candidate->position;
@@ -143,7 +140,6 @@ int embed_bitstream(const char *sequence,
     return 0;
 }
 
-/* Frees memory allocated in out_result */
 void free_embedding_result(EmbeddingResult *result) {
     if (!result) {
         return;
@@ -189,8 +185,7 @@ static int select_allele(char reference,
                          const CandidateSNP *candidate,
                          char *out_allele,
                          char **out_error) {
-    char normalized[4]; 
-    //accumulate a filtered, uppercase, de-duplicated list of valid alternate bases extracted from candidate->alternates
+    char normalized[4];
     size_t normalized_count = 0;
     size_t i;
     int ref_index;
@@ -199,15 +194,6 @@ static int select_allele(char reference,
     if (ref_index < 0) {
         return set_error(out_error, "Unsupported reference nucleotide.");
     }
-
-    /* If candidate->alternates provided:
-        Treats alternates as a char array of allowed alternate bases and de-duplicates/filters invalid entries.
-        If ≥2 alternates exist: use normalized[bit & 1] (choose one of two).
-        If 1 alternate exists:
-        bit==0 → use that alternate.
-        bit==1 → choose a fallback allele from DEFAULT_ALLELE_MAP that is distinct from the provided alternate.
-        If no valid alternates present:use DEFAULT_ALLELE_MAP and choose index bit&1.
-    */
 
     if (candidate && candidate->alternates && candidate->num_alternates > 0) {
         for (i = 0; i < candidate->num_alternates && normalized_count < 4; ++i) {

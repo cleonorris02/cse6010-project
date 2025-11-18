@@ -2,7 +2,7 @@
 
 This project explores a novel approach to genomic data security by combining DNA sequence representation with modern cryptographic methods. We build upon the methodology introduced in Dokyun Na’s paper “DNA steganography: hiding undetectable secret messages within the single nucleotide polymorphisms of a genome and detecting mutation-induced errors”, published in Microbial Cell Factories, by adapting the framework to incorporate the XChaCha20 encryption algorithm in place of the simple substitution cipher originally used. XChaCha20 offers significant advantages in speed, scalability, and resilience against timing attacks, making it a compelling candidate for protecting sensitive biological information. Using a publicly available DNA sequence dataset from Kaggle, our system encodes encrypted data into genomic sequences and evaluates whether the efficiency and robustness of XChaCha20 can be effectively applied in this context. The goal of this project is to assess the feasibility of stronger encryption techniques within DNA-based data hiding, thereby extending the state of the art in secure storage and transmission of biological information. 
 
-## DNA Hotspot Encryption (Preprocessed Strings)
+# Encryption Module
 
 This module encrypts preprocessed hotspot DNA strings using libsodium's XChaCha20 stream cipher while parallelising the workload across seven OpenMP threads. Instead of parsing the original hotspot blocks, it consumes a TSV export produced by `python/pre_two.py`, which already condenses hotspot regions into standalone DNA strings.
 
@@ -53,7 +53,7 @@ The encryptor incorporates hotspot positions and reference sequences into the pl
 
 The tool enforces seven OpenMP threads by default to satisfy the throughput requirements of the downstream pipeline. Adjust `--threads` only when necessary for benchmarking or alternative deployments.
 
-# Building the C embedding module
+# Embedding Module
 
 Run `make` from the repository root to compile the reusable library (`c/embedding/libembedding.a`) and a small demonstration program (`c/embedding/embedding_demo`).
 

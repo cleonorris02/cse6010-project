@@ -1,3 +1,8 @@
+/*         
+ * Outline and logic generated with ChatGPT (OpenAI), Oct 2025.         
+ * Reviewed and modified by Viru Repalle.         
+ * */
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif

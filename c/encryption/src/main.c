@@ -1,3 +1,8 @@
+/*         
+ * Outline and logic generated with ChatGPT (OpenAI), Oct 2025.         
+ * Reviewed and modified by Viru Repalle.         
+ * */
+
 #include "sequence.h"
 
 #include <errno.h>

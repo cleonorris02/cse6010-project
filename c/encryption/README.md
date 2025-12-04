@@ -48,3 +48,21 @@ The encryptor incorporates hotspot positions and reference sequences into the pl
 ## Parallel execution
 
 The tool enforces seven OpenMP threads by default to satisfy the throughput requirements of the downstream pipeline. Adjust `--threads` only when necessary for benchmarking or alternative deployments.
+
+## Verifying the XChaCha20 Implementation
+
+To verify that the XChaCha20 encryption algorithm is working correctly, run the verification tests:
+
+```bash
+cd tests
+make test
+```
+
+The tests verify:
+1. **Encryption/Decryption round-trip**: Encrypting and decrypting returns the original data
+2. **Binary-to-DNA encoding**: The encoding scheme is reversible and correct
+3. **Deterministic encryption**: Same key/nonce produces same ciphertext
+4. **Full pipeline**: Complete encrypt → encode → decode → decrypt workflow
+5. **Nonce uniqueness**: Different nonces produce different ciphertext
+
+See `tests/README.md` for more details.

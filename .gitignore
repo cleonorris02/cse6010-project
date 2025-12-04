@@ -17,3 +17,4 @@ c/error_detection/error_detection
 .vscode/
 *.swp
 *.swo
+_codeql_detected_source_root

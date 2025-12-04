@@ -1,0 +1,19 @@
+# Compiled binaries
+c/encryption/tests/test_xchacha20
+c/encryption/dna_hotspot_encryptor
+c/embedding/embedding_demo
+c/error_detection/error_detection
+
+# Object files
+*.o
+
+# Static libraries
+*.a
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+*.swp
+*.swo

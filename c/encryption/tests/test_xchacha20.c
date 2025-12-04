@@ -136,7 +136,9 @@ void test_encrypt_decrypt_roundtrip(void) {
     );
     ASSERT_EQ(0, enc_result, "Encryption returns success");
 
-    /* Verify ciphertext is different from plaintext */
+    /* Verify ciphertext is different from plaintext.
+     * Note: The probability of XChaCha20 keystream matching the plaintext
+     * for even a 16-byte input is 2^(-128), which is negligible. */
     int is_different = memcmp(plaintext, ciphertext, plaintext_len) != 0;
     ASSERT_EQ(1, is_different, "Ciphertext differs from plaintext");
 
@@ -338,7 +340,9 @@ void test_nonce_uniqueness(void) {
     crypto_stream_xchacha20_xor(cipher1, (const unsigned char *)plaintext, len, nonce1, key);
     crypto_stream_xchacha20_xor(cipher2, (const unsigned char *)plaintext, len, nonce2, key);
 
-    /* Different nonces should produce different ciphertext */
+    /* Different nonces should produce different ciphertext.
+     * Note: The probability of collision with different 192-bit nonces is
+     * 2^(-192) per keystream byte, which is negligible for any practical test. */
     int is_different = memcmp(cipher1, cipher2, len) != 0;
     ASSERT_EQ(1, is_different, "Different nonces produce different ciphertext");
 

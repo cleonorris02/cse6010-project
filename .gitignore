@@ -1,0 +1,19 @@
+# Sphinx build artifacts
+docs/_build/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C build artifacts
+*.o
+*.a
+*.so
+*.out
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/

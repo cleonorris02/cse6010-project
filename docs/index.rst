@@ -1,10 +1,10 @@
 .. Project documentation master file
 
-Project Name
+Hidden in Plain Sequence: Strengthening DNA Steganography with Advanced Encryption
 ============
 
-Contents:
-
+Abstract:
+This project explores a novel approach to genomic data security by combining DNA sequence representation with modern cryptographic methods. We build upon the methodology introduced in Dokyun Na’s paper “DNA steganography: hiding undetectable secret messages within the single nucleotide polymorphisms of a genome and detecting mutation-induced errors”, published in Microbial Cell Factories, by adapting the framework to incorporate the XChaCha20 encryption algorithm in place of the simple substitution cipher originally used. XChaCha20 offers significant advantages in speed, scalability, and resilience against timing attacks, making it a compelling candidate for protecting sensitive biological information. Using the Human Genome Dataset from the NIH, our system encodes encrypted data into genomic sequences and evaluates whether the efficiency and robustness of XChaCha20 can be effectively applied in this context. The goal of this project is to assess the feasibility of stronger encryption techniques within DNA-based data hiding, thereby extending the state of the art in secure storage and transmission of biological information.
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

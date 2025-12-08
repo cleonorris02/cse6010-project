@@ -4,7 +4,7 @@
 import datetime
 
 project = "CSE 6010"
-author = "Author Name"
+author = "Team 2 Yue-Tsz Fan, Cleo Norris, Virupaksha Repalle"
 copyright = f"{datetime.date.today().year}, {author}"
 
 extensions = [
